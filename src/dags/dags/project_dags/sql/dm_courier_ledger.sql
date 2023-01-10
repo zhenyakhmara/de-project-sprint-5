@@ -1,6 +1,6 @@
---Витрину будем пересобирать заново в каждом таске, чтобы исключить ошибки при подгрузке данных за прошлые периоды.
---Первым делом очишаем таблицу
-truncate table cdm.dm_courier_ledger;
+
+delete from  cdm.dm_courier_ledger where settlement_month =  extract ( month from cast ('{{ds}}' as timestamp)) 
+and settlement_year = cast (substring ('{{ds}}', 1,4 ) as int);
 
 with t1 as
 	(select
@@ -53,5 +53,6 @@ insert into cdm.dm_courier_ledger
 	t2.courier_order_sum + t1.courier_tips_sum * 0.95 as courier_reward_sum
 from dds.dm_couriers as c
 left join t1 on t1.courier_id = c.id
-left join t2 on t1.courier_id = t2.courier_id and t1.order_month = t2.order_month and t1.order_year = t2.order_year);
-
+left join t2 on t1.courier_id = t2.courier_id and t1.order_month = t2.order_month and t1.order_year = t2.order_year
+where t1.order_month =  extract ( month from cast ('{{ds}}' as timestamp)) 
+and t1.order_year  = cast (substring ('{{ds}}', 1,4 ) as int));

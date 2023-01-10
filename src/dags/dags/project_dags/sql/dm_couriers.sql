@@ -10,6 +10,7 @@ insert into dds.dm_couriers
 			from
 				(select 
 					cast (object_value as json) as js 
-				from stg.deliverysystem_couriers) as t) t2
+				from stg.deliverysystem_couriers
+				where load_dttm::Date = '{{ds}}') as t) t2
 ON CONFLICT ON CONSTRAINT courier_id_inique do update 	set courier_name = excluded.courier_name
 

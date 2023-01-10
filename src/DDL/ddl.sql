@@ -14,7 +14,9 @@ rate_avg numeric (14,2),
 order_processing_fee numeric (14,2),
 courier_order_sum  numeric (14,2),
 courier_tips_sum numeric (14,2),
-courier_reward_sum numeric (14,2))
+courier_reward_sum numeric (14,2),
+CONSTRAINT dm_courier_ledger_inique unique (courier_id,settlement_year,settlement_month)
+);
 
 );
 --dds
@@ -23,7 +25,7 @@ create table dds.dm_couriers
 (
 id serial4 primary key,
 courier_id text not null,
-courier_name text not null
+courier_name text not null,
 CONSTRAINT courier_id_inique unique (courier_id)
 );
 
@@ -64,7 +66,7 @@ create table stg.deliverysystem_deliveries
 delivery_id text not null,
 load_dttm timestamp,
 delivery_ts timestamp,
-object_value text not null
+object_value text not null,
 CONSTRAINT delivery_id_inique unique (delivery_id)
 );
 

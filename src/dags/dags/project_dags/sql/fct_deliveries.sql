@@ -27,7 +27,8 @@ insert into dds.fct_deliveries
 			from
 				(select 
 					cast (object_value as json) as js 
-				from stg.deliverysystem_deliveries) as t) t2
+				from stg.deliverysystem_deliveries
+				where load_dttm::Date = '{{ds}}') as t) t2
 		left join dds.dm_orders on t2.order_key = dm_orders.order_key
 		left join dds.dm_timestamps as ts1 on t2.order_ts = ts1.ts
 		left join dds.dm_timestamps as ts2 on t2.delivery_ts = ts2.ts

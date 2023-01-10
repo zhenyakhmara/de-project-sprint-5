@@ -13,7 +13,8 @@ from
 	from
 		(select 
 			cast (object_value as json) as js	
-		from stg.deliverysystem_deliveries) as t) t2
+		from stg.deliverysystem_deliveries
+		where load_dttm::Date = '{{ds}}') as t) t2
 ON CONFLICT ON CONSTRAINT dm_timestamps_ts_unique do update set year = excluded.year;
 
 insert into dds.dm_timestamps 
@@ -31,5 +32,6 @@ from
 	from
 		(select 
 			cast (object_value as json) as js	
-		from stg.deliverysystem_deliveries) as t) t2
+		from stg.deliverysystem_deliveries
+		where load_dttm::Date = '{{ds}}') as t) t2
 ON CONFLICT ON CONSTRAINT dm_timestamps_ts_unique do update set year = excluded.year;
